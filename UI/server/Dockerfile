@@ -9,4 +9,10 @@ RUN pip install -r requirements.txt
 RUN python -m nltk.downloader stopwords wordnet
 EXPOSE 5000
 COPY . .
+
+# Extract cache
+RUN \
+    mkdir -p /data && \
+    tar -xzvf zeste_cache.tar.gz -C /data
+
 ENTRYPOINT ["python", "server.py"]

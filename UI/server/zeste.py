@@ -12,7 +12,7 @@ nltk.download('stopwords')
 nltk.download('wordnet')
 
 numberbatch_en = pickle.load(open("/data/zeste_cache/numberbatch-en-19.08.pickle", 'rb'))
-numberbatch_fr = pickle.load(open("/data/zeste_cache/numberbatch-fr-19.08.pickle", 'rb'))
+numberbatch_fr = None # pickle.load(open("/data/zeste_cache/numberbatch-fr-19.08.pickle", 'rb'))
 
 logging.info('Loading relations descriptions...')
 relations = {}
@@ -39,7 +39,8 @@ def preprocess(doc, language='en'):
 
 
 def get_word_neighborhood(word, depth=2, allowed_rels='all', disallowed_rels=[], language='en'):
-    neighborhood = pickle.load(open('/data/zeste_cache/neighborhoods_'+language+'/'+word+'.pickle', 'rb'))
+    # neighborhood = pickle.load(open('/data/zeste_cache/neighborhoods_'+language+'/'+word+'.pickle', 'rb'))
+    neighborhood = pickle.load(open('/data/zeste_cache/'+word+'.pickle', 'rb'))
     neighborhood_words = list(neighborhood.keys())
 
     if allowed_rels != 'all':
@@ -111,7 +112,8 @@ def generate_label_neighborhoods(labels_list, language, disallowed_rels):
         disallowed_rels_string += "_" + "-".join(sorted(disallowed_rels))
     label_neighborhoods = {}
     for label in labels_list:
-        path = '/data/zeste_cache/demo_cache/'+label + disallowed_rels_string + ('.pickle' if  language == 'en' else '_fr.pickle')
+        # path = '/data/zeste_cache/demo_cache/'+label + disallowed_rels_string + ('.pickle' if  language == 'en' else '_fr.pickle')
+        path = '/data/zeste_cache/'+label + disallowed_rels_string + ('.pickle' if  language == 'en' else '_fr.pickle')
         if os.path.exists(path):
             logging.info('Loading cached neighborhood for the label "'+ label +'"')
             label_neighborhoods[label] = pickle.load(open(path, 'rb'))
